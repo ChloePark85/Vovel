@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Vovel! | 오디오 기반 채팅형 소설플랫폼! </title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.0/css/bulma.min.css"/>
+        <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+        <style>
+
+        </style>
+        <script>
+            $(document).ready(function (){
+                showStory();
+            });
+
+            function showStory(){
+                $.ajax({
+                    type: 'GET',
+                    url: 'api/show_story',
+                    data: {},
+                    success: function 
+                })
+            }
+        </script>
+    </head>
+    <body>
+
+
+        
+    </body>
+</html>

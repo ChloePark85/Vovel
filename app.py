@@ -1,0 +1,24 @@
+from pymongo import MongoClient
+
+from flask import Flask, render_template, jsonify, request
+
+app = Flask(__name__)
+
+client= MongoClient('localhost', 27017)
+db=client.dbsparta
+
+@app.route('/')
+def home():
+    return render_template('index.html')
+
+@app.route('/api/show', methods= ['GET'])
+def show_story():
+    return jsonify({'result': 'success', 'msg': '스토리를 가져왔습니다.'})
+
+@app.route('/api/transform', methods= ['GET'])
+def show_chatify():
+    return jsonify({'result': 'success', 'msg': '스토리를 변환했습니다.'})
+
+
+    # name = request.args.get('name')
+    # return render_template('detail.html', name = name)
