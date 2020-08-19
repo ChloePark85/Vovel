@@ -1,16 +1,15 @@
 # Vovel
 voice based chatfiction
 
-> 프로젝트 간략 소개 한 문장 
+> 오디오 기반 채팅형 소설 프로젝트입니다. 
 - 
-- 오디오 기반 채팅형 소설 프로젝트입니다. 
+-  
 
 ## 핵심 기능  Key Feature
 - 줄글로 된 고전 소설을 채팅형식으로 변환합니다. 
 - 채팅형식으로 변환된 소설을 오디오로 만들 수 있습니다. 
 
 ## 사용 How To Use
-- 
 - 더 많은 예시와 사용 예제는 [Wiki](wiki)를 참고하세요._
 ![](header.png)
 
@@ -25,7 +24,7 @@ voice based chatfiction
 - Repository: (
 
 ## License
-이름1 – [이메일 주소1](mailto:이메일주소@example.com)  
+이름1 – [hapark85@gmail.com](mailto:hapark85@gmail.com)  
 이름2 - [이메일 주소2](mailto:이메일주소@example.com)  
 
 XYZ license를 준수합니다. ``LICENSE``에서 자세한 정보를 확인할 수 있습니다.  
