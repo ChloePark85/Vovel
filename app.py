@@ -11,14 +11,45 @@ db=client.dbsparta
 def home():
     return render_template('index.html')
 
-@app.route('/api/show', methods= ['GET'])
-def show_story():
-    story=list(db.myproject.find({}, {'_id':False}))
-    return jsonify({'result': 'success', 'storylines': story})
+@app.route('/storydata', methods=["POST"])
+def post_storydata():
+    storydata = request.files['text_file']
+    print(type(storydata))
+    print(storydata.read())
+    lines = storydata.split("\n")
+    for index, line in enumerate(lines):
+        if line.startswith('"'):
+            line_type = "chat"
+            # print(f"Chat: {line}")
+        else:
+            line_type = "narration"
+            # print(f"Narration: {line}")
+    doc = {
+        'order': index,
+        'type': line_type,
+        'text': line,
+    }
+    db.myproject.insert_one(doc)
+    return jsonify({'result':'success', 'storylines':storydata, 'msg':'스토리가 업로드되었습니다'})
+
+@app.route('/storytransform', methods=["GET"])
+def show_storydata():
+    storydata= list(db.myproject.find({}, {'_id':0}))
+    return jsonify({'result':'success', 'type': line_type, 'text': line})
+
+
+
+
+# @app.route('/api/show', methods= ['GET'])
+# def show_story():
+#     story=list(db.myproject.find({}, {'_id':False}))
+#     return jsonify({'result': 'success', 'storylines': story})
 
 # @app.route('/api/transform', methods= ['GET'])
 # def show_chatify():
 #     return jsonify({'result': 'success', 'msg': '스토리를 변환했습니다.'})
+
+
 
 if __name__ == '__main__':
     app.run('0.0.0.0', port=5000, debug=True)

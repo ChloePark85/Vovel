@@ -23,29 +23,69 @@
         <style>
             * {
                 font-family: 'Stylish', sans-serif;
+                /*background-color: #CCC;*/
+                /*text-align: center;*/
+            }
+
+            .float{
+                position: fixed;
+                width: 60px;
+                height: 60px;
+                bottom: 40px;
+                right: 40px;
+                background-color: #0C9;
+                color: #FFF;
+                border-radius: 50px;
+                text-align: center;
+                box-shadow: 2px 2px 3px #999;
+            }
+
+            .my-float{
+                margin-top:22px;
             }
 
             .wrap {
-                width: 900px;
+                width: 9000px;
                 margin:auto;
             }
 
-            .center {
-                text-align: center;
+            .wrap .chat-box {
+                width: 500px;
+                height: 1000px;
+                border: 1px solid;
+                /*padding: 100px;*/
+                margin: 100px;
             }
 
         </style>
         <script type="text/javascript">
-            $(document).ready(function (){
-                showStory();
-            });
+            // $(document).ready(function (){
+            //     showStory();
+            // });
 
-            function showStory() {
-                $('#story-box').empty()
+            function storyData(){
+                $.ajax({
+                    type:"POST",
+                    url:"/storydata",
+                    data:{
+                        order:index,
+                        type:line_type,
+                        text:line
+                    },
+                    success:function (response){
+                        if (response["result"] == "success"){
+                            alert(response["msg"]);
+                        }
+                }
+                })
+            }
+
+            function transformStory() {
+                $('.chat-box').empty()
 
                 $.ajax({
                     type: "GET",
-                    url: "/api/show",
+                    url: "/storytransform",
                     data: {},
 
                     success: function (response) {
@@ -65,7 +105,44 @@
         </script>
     </head>
     <body>
-        <H2>Vovel</H2>
+        <a href="#" class="float">
+            <i class=""fa fa-plus my-float"></i>
+        </a>
+
+
+        <div class = "wrap">
+            <div class="jumbotron">
+                <H2 class = "display-1">Vovel</H2>
+                <p class = "lead">장문의 소설을 채팅형식으로 변환하는 사이트입니다.<br>나레이션과 대화로 구성된 텍스트파일을 업로드해주세요.</p>
+                <hr class="my-4">
+                <p class = "lead">
+                <form action="/data" method="post" enctype="multipart/form-data">
+                    <input type="file" name="text_file">
+                    <input type="submit">
+                </form>
+                </p>
+            </div>
+            <div class="chat-box">
+                <div class="part roll-container">
+                    <div class = "unit right roll-block _chat">
+                        <span class="speaker view" style>
+                            <img src="" alt="speaker">
+                        </span>
+                        <ul class = "script">
+
+                        </ul>
+
+                    </div>
+                    <div class = "unit left roll-block _chat">
+
+                    </div>
+                    <div class = "unit center roll-block _chat">
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
         
     </body>
