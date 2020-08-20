@@ -11,6 +11,7 @@ db=client.dbsparta
 def home():
     return render_template('index.html')
 
+#사용자가 텍스트 파일을 올리면 파일을 읽어서 채팅과 나레이션으로 구분하고 db에 저장함.
 @app.route('/storydata', methods=["POST"])
 def post_storydata():
     storydata = request.files['text_file']
@@ -32,6 +33,7 @@ def post_storydata():
     db.myproject.insert_one(doc)
     return jsonify({'result':'success', 'storylines':storydata, 'msg':'스토리가 업로드되었습니다'})
 
+#db에 저장된 데이터를 가져와서 json으로 변환된 것을 html에 전달함.
 @app.route('/storytransform', methods=["GET"])
 def show_storydata():
     storydata= list(db.myproject.find({}, {'_id':0}))

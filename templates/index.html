@@ -23,8 +23,6 @@
         <style>
             * {
                 font-family: 'Stylish', sans-serif;
-                /*background-color: #CCC;*/
-                /*text-align: center;*/
             }
 
             .float{
@@ -59,10 +57,8 @@
 
         </style>
         <script type="text/javascript">
-            // $(document).ready(function (){
-            //     showStory();
-            // });
 
+            //사용자가 업로드한 데이터를 서버에 넘겨줌.
             function storyData(){
                 $.ajax({
                     type:"POST",
@@ -80,41 +76,35 @@
                 })
             }
 
-            function transformStory() {
-                $('.chat-box').empty()
+            //사용자가 업로드한 데이터에서 사용자가 클릭할 때마다 데이터의 챗/나레이션을 한줄씩 뽑아서 왼쪽 또는 중간에 담아서 그려
+            function chatStoryCreate() {
+                let chatStory=new Array();
+                let html= ;
 
-                $.ajax({
-                    type: "GET",
-                    url: "/storytransform",
-                    data: {},
+                chatStory.push({storyline[]})
 
-                    success: function (response) {
-                        if (response["result"] == "success") {
-                            let story = response["storylines"];
-                            for (let i = 0; i < storylines.length; i++) {
-                                print(story[i]["storylines"])
-                            }
-                        } else {
-                            alert("이야기를 받아오지 못했습니다");
-                        }
-                    }
-
-                })
+                for (index in chatStory){
+                    if (onclick )
+                }
             }
 
         </script>
     </head>
     <body>
-        <a href="#" class="float">
-            <i class=""fa fa-plus my-float"></i>
+
+
+<!--사용자가 클릭할 수 있는 플로팅된 버튼. 클릭할 때마다 챗 또는 나레이션이 한줄씩 나옴-->
+        <a onclick="chatStoryCreate()" class="float">
+            <i class="fas fa-mouse my-float"></i>
         </a>
 
-
+<!--사이트 이름과 설명 섹션.-->
         <div class = "wrap">
             <div class="jumbotron">
                 <H2 class = "display-1">Vovel</H2>
                 <p class = "lead">장문의 소설을 채팅형식으로 변환하는 사이트입니다.<br>나레이션과 대화로 구성된 텍스트파일을 업로드해주세요.</p>
                 <hr class="my-4">
+<!-- 파일을 업로드할 수 있는 섹션.-->
                 <p class = "lead">
                 <form action="/data" method="post" enctype="multipart/form-data">
                     <input type="file" name="text_file">
@@ -122,6 +112,7 @@
                 </form>
                 </p>
             </div>
+<!-- 채팅 박스. 챗은 왼쪽 정렬, 나레이션은 중앙 정렬  -->
             <div class="chat-box">
                 <div class="part roll-container">
                     <div class = "unit right roll-block _chat">
@@ -131,9 +122,6 @@
                         <ul class = "script">
 
                         </ul>
-
-                    </div>
-                    <div class = "unit left roll-block _chat">
 
                     </div>
                     <div class = "unit center roll-block _chat">
