@@ -14,10 +14,9 @@ def home():
 #사용자가 텍스트 파일을 올리면 파일을 읽어서 채팅과 나레이션으로 구분하고 db에 저장함.
 @app.route('/storydata', methods=["POST"])
 def post_storydata():
-    storydata = request.files['text_file']
-    print(type(storydata))
-    print(storydata.read())
-    lines = storydata.split("\n")
+    title = request.form['title']
+    story = request.form['story']
+    lines = story.split("\n")
     for index, line in enumerate(lines):
         if line.startswith('"'):
             line_type = "chat"
@@ -31,7 +30,7 @@ def post_storydata():
         'text': line,
     }
     db.myproject.insert_one(doc)
-    return jsonify({'result':'success', 'storylines':storydata, 'msg':'스토리가 업로드되었습니다'})
+    return jsonify({'result':'success', 'order': index, 'type':line_type, 'text':line, 'msg':'스토리가 업로드되었습니다'})
 
 #db에 저장된 데이터를 가져와서 json으로 변환된 것을 html에 전달함.
 @app.route('/storytransform', methods=["GET"])

@@ -52,7 +52,7 @@
                 height: 1000px;
                 border: 1px solid;
                 /*padding: 100px;*/
-                margin: 100px;
+                margin: 40px;
             }
 
         </style>
@@ -64,13 +64,13 @@
                     type:"POST",
                     url:"/storydata",
                     data:{
-                        order:index,
-                        type:line_type,
-                        text:line
+                        'title':title,
+                        'story':story
                     },
                     success:function (response){
                         if (response["result"] == "success"){
                             alert(response["msg"]);
+                            window.location.reload()
                         }
                 }
                 })
@@ -107,8 +107,9 @@
 <!-- 파일을 업로드할 수 있는 섹션.-->
                 <p class = "lead">
                 <form action="/data" method="post" enctype="multipart/form-data">
-                    <input type="file" name="text_file">
-                    <input type="submit">
+                    <h5>소설 제목 </h5><input type="text" name="title"><br><br>
+                    <h5>소설 내용 </h5><textarea cols="50" rows="10"></textarea><br><br>
+                <input type="button" id="button1" onclick="transform();" value="변환을 시작하자!">
                 </form>
                 </p>
             </div>
