@@ -11,11 +11,20 @@ db=client.dbsparta
 def home():
     return render_template('index.html')
 
-#사용자가 텍스트 파일을 올리면 파일을 읽어서 채팅과 나레이션으로 구분하고 db에 저장함.
-@app.route('/storydata', methods=["POST"])
-def post_storydata():
+#서버에서 책 목록을 가져옴
+@app.route('/bookList', methods=["GET"])
+def read_bookList():
+    bookList=list(db.bookList.find({}, {'_id':0}))
+    return jsonify({
+        'result':'success',
+        'bookList':bookList
+    })
+#채팅형태로 변환해서 데이터베이스에 저장
+@app.route('/makeStory', methods=['POST'])
+def write_story():
     title = request.form['title']
-    story = request.form['story']
+    author = request.form['author']
+    story= request.form['story']
     lines = story.split("\n")
     for index, line in enumerate(lines):
         if line.startswith('"'):
@@ -24,19 +33,25 @@ def post_storydata():
         else:
             line_type = "narration"
             # print(f"Narration: {line}")
-    doc = {
+    bookList = {
+        'title':title,
+        'author':author
+    }
+    db.bookList.insert_one(bookList)
+    story={
         'order': index,
         'type': line_type,
         'text': line,
     }
-    db.myproject.insert_one(doc)
-    return jsonify({'result':'success', 'order': index, 'type':line_type, 'text':line, 'msg':'스토리가 업로드되었습니다'})
+    db.story.insert_one(story)
+    return jsonify({'result':'success', 'msg':'스토리가 업로드되었습니다'})
+
 
 #db에 저장된 데이터를 가져와서 json으로 변환된 것을 html에 전달함.
-@app.route('/storytransform', methods=["GET"])
-def show_storydata():
-    storydata= list(db.myproject.find({}, {'_id':0}))
-    return jsonify({'result':'success', 'type': line_type, 'text': line})
+@app.route('/makeStory', methods=["GET"])
+def read_story():
+    storylines= list(db.story.find({}, {'_id':0}))
+    return jsonify({'result':'success', 'storylines': storylines})
 
 
 

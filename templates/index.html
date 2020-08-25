@@ -43,7 +43,7 @@
             }
 
             .wrap {
-                width: 9000px;
+                width: 900px;
                 margin:auto;
             }
 
@@ -52,20 +52,51 @@
                 height: 1000px;
                 border: 1px solid;
                 /*padding: 100px;*/
-                margin: 40px;
+                margin: 20px;
             }
+
+            #bookList-box {
+                text-align: center;
+            }
+
 
         </style>
         <script type="text/javascript">
+            $(document).ready(function(){
+                $("chat-box").html("");
+                bookList();
+            });
+            //브라우저에 주소가 입력되면 책 목록을 가져옴
+            function bookList(){
+                $.ajax({
+                    type:"GET",
+                    url:"/bookList",
+                    data:{},
+                    success: function(response){
+                        if (response["result"]=="success"){
+                            let bookList = response["bookTitle"];
+                            for (let i=0; i<reviews.length; i++){
+                                makeCard(
+                                    bookList[i]["title"]
+                                );
+                            }
+                        } else{
+                            alert("책목록을 받아오지 못했습니다");
+                        }
+                    }
+                })
+            }
 
             //사용자가 업로드한 데이터를 서버에 넘겨줌.
-            function storyData(){
+            function makeStory(){
                 $.ajax({
                     type:"POST",
-                    url:"/storydata",
+                    url:"/makeStory",
                     data:{
-                        'title':title,
-                        'story':story
+                        title:title,
+                        author:author,
+                        type:line_type,
+                        text:line
                     },
                     success:function (response){
                         if (response["result"] == "success"){
@@ -77,16 +108,43 @@
             }
 
             //사용자가 업로드한 데이터에서 사용자가 클릭할 때마다 데이터의 챗/나레이션을 한줄씩 뽑아서 왼쪽 또는 중간에 담아서 그려
-            function chatStoryCreate() {
-                let chatStory=new Array();
-                let html= ;
+            function chatify() {
+                $.ajax({
+                    type: "GET",
+                    url: "/makeStory",
+                    data: {},
+                    success: function (response) {
+                        if (response["result"] == "success") {
+                            let storylines = response["storylines"];
+                            for (let i = 0; i < text.length; i++) {
+                                makeChatify(
+                                    chatify[i]
+                                );
+                            }
+                        } else {
+                            alert("변환에 실패했습니다.")
+                        }
+                    }
+                })
+            }
 
-                chatStory.push({storyline[]})
+            function makeCard(title, author) {
+                let tempHtml = `<tr>
+                        <td>${title}</td>
+                        <td>${author}</td>
+                    </tr>`;
+                $("#bookList-box").append(tempHtml);
+            }
 
-                for (index in chatStory){
-                    if (onclick )
+            function makeChatify(line_type, text) {
+                let chatBox = $("chat-box").val();
+                if (line_type == "narration") {
+                    $(".narration").css("narDisplay");
+                } else if (line_type == "chat") {
+                    $(".chat").css("chatDisplay");
                 }
             }
+
 
         </script>
     </head>
@@ -109,7 +167,7 @@
                 <form action="/data" method="post" enctype="multipart/form-data">
                     <h5>소설 제목 </h5><input type="text" name="title"><br><br>
                     <h5>소설 내용 </h5><textarea cols="50" rows="10"></textarea><br><br>
-                <input type="button" id="button1" onclick="transform();" value="변환을 시작하자!">
+                <input type="button" id="button1" onclick="makeChatify();" value="변환을 시작하자!">
                 </form>
                 </p>
             </div>
@@ -131,8 +189,23 @@
                 </div>
 
             </div>
+            <div class="bookList">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">제목</th>
+                        <th scope="col">저자</th>
+                    </tr>
+                    </thead>
+                    <tbody id="bookList-box">
+                    <tr>
+                        <td>봄봄</td>
+                        <td>김유정</td>
+                    </tr>
+                    </tbody>
+                </table>
         </div>
 
-        
+        </div>
     </body>
 </html>
