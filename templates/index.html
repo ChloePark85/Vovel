@@ -3,11 +3,11 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
               integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
               crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
 
         <!-- JS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -20,53 +20,12 @@
 
         <title>Vovel! | 오디오 기반 채팅형 소설플랫폼! </title>
         <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-        <style>
-            * {
-                font-family: 'Stylish', sans-serif;
-            }
-
-            .float{
-                position: fixed;
-                width: 60px;
-                height: 60px;
-                bottom: 40px;
-                right: 40px;
-                background-color: #0C9;
-                color: #FFF;
-                border-radius: 50px;
-                text-align: center;
-                box-shadow: 2px 2px 3px #999;
-            }
-
-            .my-float{
-                margin-top:22px;
-            }
-
-            .wrap {
-                width: 900px;
-                margin:auto;
-            }
-
-            .wrap .chat-box {
-                width: 500px;
-                height: 1000px;
-                border: 1px solid;
-                /*padding: 100px;*/
-                margin: 20px;
-            }
-
-            #bookList-box {
-                text-align: center;
-            }
-
-
-        </style>
         <script type="text/javascript">
             $(document).ready(function(){
                 $("chat-box").html("");
                 bookList();
             });
-            //브라우저에 주소가 입력되면 책 목록을 가져옴
+            //브라우저에 주소가 입력되면 책 목록을 가져
             function bookList(){
                 $.ajax({
                     type:"GET",
@@ -173,19 +132,23 @@
             </div>
 <!-- 채팅 박스. 챗은 왼쪽 정렬, 나레이션은 중앙 정렬  -->
             <div class="chat-box">
-                <div class="part roll-container">
-                    <div class = "unit right roll-block _chat">
-                        <span class="speaker view" style>
-                            <img src="" alt="speaker">
-                        </span>
-                        <ul class = "script">
-
-                        </ul>
-
-                    </div>
-                    <div class = "unit center roll-block _chat">
-
-                    </div>
+                <div class = "div header-wrapper">
+                    <header class="header">
+                        <h1 class="header__title">$("title").val()</h1>
+                    </header>
+                </div>
+                <div class="chat-screen">
+                    <ul class="chat__messages">
+                        <li class="narration-message">$("narration").val()</li>
+                        <li class="chat-message">
+                            <img src="images/avatar.jpg" class="avatar message__avatar">
+                            <div class="message__content">
+                                <span class="message__author">등장인물 1</span>
+                                <div class="message__bubble">$("chat").val()</div>
+                            </div>
+                            <span class="message__timestamp"></span>
+                        </li>
+                    </ul>
                 </div>
 
             </div>

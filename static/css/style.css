@@ -1,0 +1,128 @@
+* {
+    font-family: 'Stylish', sans-serif;
+}
+
+.float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
+    background-color: #0C9;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    box-shadow: 2px 2px 3px #999;
+}
+
+.my-float {
+    margin-top: 22px;
+}
+
+.wrap {
+    width: 900px;
+    margin: auto;
+}
+
+.wrap .chat-box {
+    width: 500px;
+    height: 1000px;
+    border: 1px solid;
+    /*padding: 100px;*/
+    margin: 20px;
+}
+
+#bookList-box {
+    text-align: center;
+}
+
+.chat-box {
+    border: 1px solid;
+    padding: 10px;
+    width: 100px;
+    height: 200px;
+}
+
+.header-wrapper {
+    position: fixed;
+    z-index: 2;
+    top: 0px;
+    width: 100%;
+    background-color: white;
+    padding: 5px 0px;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.chat-screen {
+    padding: 10px 0px;
+    padding-top: 150px;
+    background-image: url("../chatBg.png");
+    min-height: 1000vh;
+}
+
+.chat__icon{
+    font-size:18px;
+    transition:opacity 0.5s ease-in-out;
+}
+
+.chat-screen .chat__messages{
+    border-top:1px solid #f7f7f7;
+    padding-top:30px;
+    display:flex;
+    flex-direction:column;
+    align-items: center;
+    padding:0px 20px;
+}
+
+.chat__messages .chat__timestamp{
+    background-color:white;
+    font-size:12px;
+    padding:5px 10px;
+    border-radius:10px;
+    margin-bottom:30px;
+    box-shadow:rgba(0, 0, 0, 0.3) 0px 8px 16px -8px, rgba(0,0,0,0.024) 0px -6px 16px -6px;
+    text-transform: uppercase;
+    font-weight:700;
+}
+
+.message{
+    display:flex;
+    align-items:flex-start;
+    width:50%;
+    margin-bottom:20px;
+}
+
+.message .message__content{
+    width:80%;
+}
+
+.message .message__bubble{
+    background-color: white;
+    border-radius:15px;
+    box-shadow:rgba(0, 0, 0, 0.3) 0px 8px 16px -8px, rgba(0,0,0,0.024) 0px -6px 16px -6px;
+    padding:10px 20px;
+    border:black;
+}
+
+.chat-message .message__bubble{
+    border-bottom-left-radius:0px;
+    background-image: linear-gradient(to right, #fc00ff, #00dbde);
+    color:white;
+    display:block;
+    font-weight:600;
+}
+
+@keyframes incomingAnim{
+    from{
+        opacity:0;
+        transform: translateX(-100px);
+    }
+    to{
+        opacity:1;
+        transform:none;
+
+    }
+}
+.chat-message{
+    animation:incomingAnim 1s linear forwards
+}
