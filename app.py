@@ -15,11 +15,11 @@ def home():
 
 # 서버에서 책 목록을 가져옴
 @app.route('/bookList', methods=["GET"])
-def read_bookList():
-    bookList = list(db.bookList.find({}, {'_id': 0}))
+def read_book_list():
+    book_list = list(db.bookList.find({}, {'_id': 0}))
     return jsonify({
         'result': 'success',
-        'bookList': bookList
+        'bookList': book_list
     })
 
 
@@ -29,7 +29,11 @@ def write_story():
     title = request.form['title']
     author = request.form['author']
     story = request.form['story']
+
     lines = story.split("\n")
+
+    story = []
+
     for index, line in enumerate(lines):
         if line.startswith('"'):
             line_type = "chat"
@@ -37,17 +41,22 @@ def write_story():
         else:
             line_type = "narration"
             # print(f"Narration: {line}")
-    bookList = {
+
+        # Tutor: 대사 혹은 나레이션은 순서와 함께 하나의 content dictionary에 담습니다.
+        content = {
+            'order': index,
+            'type': line_type,
+            'text': line,
+        }
+        # Tutor: story 라는 list에 content를 담습니다. story => [<content>, <content>, <content>, ...]
+        story.append(content)
+
+    book = {
         'title': title,
-        'author': author
+        'author': author,
+        'story': story,
     }
-    db.bookList.insert_one(bookList)
-    story = {
-        'order': index,
-        'type': line_type,
-        'text': line,
-    }
-    db.story.insert_one(story)
+    db.bookList.insert_one(book)
     return jsonify({'result': 'success', 'msg': '스토리가 업로드되었습니다'})
 
 

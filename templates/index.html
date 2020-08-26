@@ -3,11 +3,13 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <link rel="stylesheet" href="{{url_for('static', filename='css/style.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
               integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
               crossorigin="anonymous">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css" integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css"
+              integrity="sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V"
+              crossorigin="anonymous">
 
         <!-- JS -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
@@ -21,48 +23,64 @@
         <title>Vovel! | 오디오 기반 채팅형 소설플랫폼! </title>
         <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
         <script type="text/javascript">
-            $(document).ready(function(){
-                $("chat-box").html("");
-                bookList();
+            $(document).ready(function () {
+                // Tutor: 처음 목록을 비워준다.
+                $("#bookList-box").empty();
+                showBookList();
             });
+
             //브라우저에 주소가 입력되면 책 목록을 가져
-            function bookList(){
+            function showBookList() {
                 $.ajax({
-                    type:"GET",
-                    url:"/bookList",
-                    data:{},
-                    success: function(response){
-                        if (response["result"]=="success"){
-                            let bookList = response["bookTitle"];
-                            for (let i=0; i<reviews.length; i++){
+                    type: "GET",
+                    url: "/bookList",
+                    data: {},
+                    success: function (response) {
+                        if (response["result"] == "success") {
+                            let bookList = response["bookList"];
+                            for (let i = 0; i < bookList.length; i++) {
                                 makeCard(
-                                    bookList[i]["title"]
+                                    bookList[i]["title"],
+                                    bookList[i]["author"]
                                 );
                             }
-                        } else{
+                        } else {
                             alert("책목록을 받아오지 못했습니다");
                         }
                     }
                 })
             }
 
+            function makeCard(title, author) {
+                let tempHtml = `<tr>
+                        <td>${title}</td>
+                        <td>${author}</td>
+                    </tr>`;
+                $("#bookList-box").append(tempHtml);
+            }
+
             //사용자가 업로드한 데이터를 서버에 넘겨줌.
-            function makeStory(){
+            function makeStory() {
+                // Tutor: 사용자가 입력한 값을 가져옵니다.
+                let title = $("#book-title").val();
+                let author = $("#book-author").val();
+                let story = $("#book-story").val();
+                // TODO: 값이 없을 때는 입력해달다는 Validation을 구현합니다.
+
                 $.ajax({
-                    type:"POST",
-                    url:"/makeStory",
-                    data:{
-                        title:title,
-                        author:author,
-                        type:line_type,
-                        text:line
+                    type: "POST",
+                    url: "/makeStory",
+                    data: {
+                        title: title,
+                        author: author,
+                        story: story,
                     },
-                    success:function (response){
-                        if (response["result"] == "success"){
+                    success: function (response) {
+                        if (response["result"] == "success") {
                             alert(response["msg"]);
                             window.location.reload()
                         }
-                }
+                    }
                 })
             }
 
@@ -87,14 +105,6 @@
                 })
             }
 
-            function makeCard(title, author) {
-                let tempHtml = `<tr>
-                        <td>${title}</td>
-                        <td>${author}</td>
-                    </tr>`;
-                $("#bookList-box").append(tempHtml);
-            }
-
             function makeChatify(line_type, text) {
                 let chatBox = $("chat-box").val();
                 if (line_type == "narration") {
@@ -110,29 +120,31 @@
     <body>
 
 
-<!--사용자가 클릭할 수 있는 플로팅된 버튼. 클릭할 때마다 챗 또는 나레이션이 한줄씩 나옴-->
+        <!--사용자가 클릭할 수 있는 플로팅된 버튼. 클릭할 때마다 챗 또는 나레이션이 한줄씩 나옴-->
         <a onclick="chatStoryCreate()" class="float">
             <i class="fas fa-mouse my-float"></i>
         </a>
 
-<!--사이트 이름과 설명 섹션.-->
-        <div class = "wrap">
+        <!--사이트 이름과 설명 섹션.-->
+        <div class="wrap">
             <div class="jumbotron">
-                <H2 class = "display-1">Vovel</H2>
-                <p class = "lead">장문의 소설을 채팅형식으로 변환하는 사이트입니다.<br>나레이션과 대화로 구성된 텍스트파일을 업로드해주세요.</p>
+                <H2 class="display-1">Vovel</H2>
+                <p class="lead">장문의 소설을 채팅형식으로 변환하는 사이트입니다.<br>나레이션과 대화로 구성된 텍스트파일을 업로드해주세요.</p>
                 <hr class="my-4">
-<!-- 파일을 업로드할 수 있는 섹션.-->
-                <p class = "lead">
-                <form action="/data" method="post" enctype="multipart/form-data">
-                    <h5>소설 제목 </h5><input type="text" name="title"><br><br>
-                    <h5>소설 내용 </h5><textarea cols="50" rows="10"></textarea><br><br>
-                <input type="button" id="button1" onclick="makeChatify();" value="변환을 시작하자!">
-                </form>
+                <!-- 파일을 업로드할 수 있는 섹션.-->
+                <p class="lead">
+                <!-- Tutor: Ajax로 보낼 것이므로 Form tag를 제거합니다. -->
+                <!-- Tutor: 받으려는 값에 id를 부여하여 jQuery($)가 쉽게 캐치할 수 있도록 합니다. -->
+                <h5>소설 제목 </h5><input type="text" name="title" id="book-title"><br><br>
+                <h5>저자</h5><input type="text" name="author" id="book-author"><br><br>
+                <h5>소설 내용 </h5><textarea cols="50" rows="10" id="book-story"></textarea><br><br>
+                <!-- Tutor: 서버로 소설 내용을 보내야하므로 makeChatify -> makeStory로 바꿉니다 -->
+                <input type="button" id="button1" onclick="makeStory();" value="변환을 시작하자!">
                 </p>
             </div>
-<!-- 채팅 박스. 챗은 왼쪽 정렬, 나레이션은 중앙 정렬  -->
+            <!-- 채팅 박스. 챗은 왼쪽 정렬, 나레이션은 중앙 정렬  -->
             <div class="chat-box">
-                <div class = "div header-wrapper">
+                <div class="div header-wrapper">
                     <header class="header">
                         <h1 class="header__title">$("title").val()</h1>
                     </header>
@@ -167,7 +179,7 @@
                     </tr>
                     </tbody>
                 </table>
-        </div>
+            </div>
 
         </div>
     </body>
