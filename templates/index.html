@@ -29,6 +29,7 @@
                 showBookList();
             });
 
+            let bookList;
             //브라우저에 주소가 입력되면 책 목록을 가져
             function showBookList() {
                 $.ajax({
@@ -37,12 +38,14 @@
                     data: {},
                     success: function (response) {
                         if (response["result"] == "success") {
-                            let bookList = response["bookList"];
+                            bookList = response["bookList"];
                             for (let i = 0; i < bookList.length; i++) {
+                                story = bookList[i]["story"];
                                 makeCard(
                                     bookList[i]["title"],
-                                    bookList[i]["author"]
+                                    bookList[i]["author"],
                                 );
+
                             }
                         } else {
                             alert("책목록을 받아오지 못했습니다");
@@ -52,11 +55,25 @@
             }
 
             function makeCard(title, author) {
-                let tempHtml = `<tr>
-                        <td>${title}</td>
-                        <td>${author}</td>
-                    </tr>`;
+                let tempHtml = `<div class="card">
+                    <div class = "card-content">
+                        <div class = "title">
+                            <a href="#" onclick="Chatify('${title}')" id="title-box"></a>
+                        </div>
+                        <div class = "author">
+                            <a href="#" onclick="Chatify('${author}')" id="author-box"></a>
+                    </div>`;
                 $("#bookList-box").append(tempHtml);
+            };
+
+            {#function openClose() {#}
+            {#    if ($("#chat-box").css("display") == "block") {#}
+            {#        $("chat-box").hide();#}
+            {#    } else if () {#}
+            {#        $("#chat-box").show();#}
+            {#        $("#btn-chat-box").show();#}
+            {#        $("btn-chat-box").text("채팅 박스 닫기");#}
+            {#    }#}
             }
 
             //사용자가 업로드한 데이터를 서버에 넘겨줌.
@@ -107,11 +124,34 @@
 
             function makeChatify(line_type, text) {
                 let chatBox = $("chat-box").val();
-                if (line_type == "narration") {
-                    $(".narration").css("narDisplay");
-                } else if (line_type == "chat") {
-                    $(".chat").css("chatDisplay");
+                if $(".story[line_type]") == "narration") {
+                    messages.push("");
+                } else if $(".story[line_type]") == "chat") {
+                    messages.push("");
                 }
+            }
+
+            function loadChatbox() {
+                var e = document.getElementById("minim-chat");
+                e.style.display = "block";
+                var e = document.getElementById("maxi-chat");
+                e.style.display = "none";
+                var e = document.getElementById("chatbox");
+                e.style.margin = "0";
+            }
+
+            function closeChatbox() {
+                var e = document.getElementById("chatbox");
+                e.style.margin = "0 0 -1500px 0";
+            }
+
+            function minimChatbox() {
+                var e = document.getElementById("minim-chat");
+                e.style.display = "none";
+                var e = document.getElementById("maxi-chat");
+                e.style.display = "block";
+                var e = document.getElementById("chatbox");
+                e.style.margin = "0 0 -460px 0";
             }
 
 
@@ -142,28 +182,7 @@
                 <input type="button" id="button1" onclick="makeStory();" value="변환을 시작하자!">
                 </p>
             </div>
-            <!-- 채팅 박스. 챗은 왼쪽 정렬, 나레이션은 중앙 정렬  -->
-            <div class="chat-box">
-                <div class="div header-wrapper">
-                    <header class="header">
-                        <h1 class="header__title">$("title").val()</h1>
-                    </header>
-                </div>
-                <div class="chat-screen">
-                    <ul class="chat__messages">
-                        <li class="narration-message">$("narration").val()</li>
-                        <li class="chat-message">
-                            <img src="images/avatar.jpg" class="avatar message__avatar">
-                            <div class="message__content">
-                                <span class="message__author">등장인물 1</span>
-                                <div class="message__bubble">$("chat").val()</div>
-                            </div>
-                            <span class="message__timestamp"></span>
-                        </li>
-                    </ul>
-                </div>
-
-            </div>
+            <!-- 책 목록.  -->
             <div class="bookList">
                 <table class="table">
                     <thead>
@@ -180,7 +199,73 @@
                     </tbody>
                 </table>
             </div>
+{#            <!-- 채팅 박스. 챗은 왼쪽 정렬, 나레이션은 중앙 정렬  -->#}
+{#            <div class="chat-box" onclick="loadChatbox()" id="chat">보기</div>#}
+{#            <div class="chatbox">#}
+{#                <div class="time"><span>10:42</span></div>#}
+{##}
+{#                <div class="message sol">#}
+{#                    <div class="resim"#}
+{#                         style="background-image: url('https://fbcdn-sphotos-a-a.akamaihd.net/hphotos-ak-prn2/t1/1461137_576157439120105_582502926_n.jpg');"></div>#}
+{#                    <div class="messageText" data-time="10:42">#}
+{#                        thats ok#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="message sag mtLine">#}
+{#                    <div class="messageText" data-time="10:43">#}
+{#                        ok than#}
+{#                    </div>#}
+{#                    <div class="resim"#}
+{#                         style="background-image: url('https://fbcdn-sphotos-c-a.akamaihd.net/hphotos-ak-prn2/t1/1393075_669686723071617_1541630705_n.jpg');"></div>#}
+{#                </div>#}
+{#                <div class="message sol mtLine">#}
+{#                    <div class="resim"#}
+{#                         style="background-image: url('https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-frc3/t1/q71/1422532_452755621503523_1504727417_n.jpg');"></div>#}
+{#                    <div class="messageText" data-time="10:45">#}
+{#                        are you sure#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="message sol">#}
+{#                    <div class="resim"#}
+{#                         style="background-image: url('https://fbcdn-sphotos-g-a.akamaihd.net/hphotos-ak-prn2/1395115_368377233300847_323365594_n.jpg');"></div>#}
+{#                    <div class="messageText" data-time="10:45">#}
+{#                        yeah are you sure man?#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="message sol mtLine">#}
+{#                    <div class="resim"#}
+{#                         style="background-image: url('https://fbcdn-sphotos-a-a.akamaihd.net/hphotos-ak-prn2/t1/1461137_576157439120105_582502926_n.jpg');"></div>#}
+{#                    <div class="messageText" data-time="10:58">#}
+{#                        yeah im totally sure.#}
+{#                    </div>#}
+{#                </div>#}
+{#                <div class="message sol">#}
+{#                    <div class="resim"#}
+{#                         style="background-image: url('https://fbcdn-sphotos-d-a.akamaihd.net/hphotos-ak-frc1/1601244_265297516958879_798390578_n.png');"></div>#}
+{#                    <div class="messageText" data-time="11:01">#}
+{#                        hey whats going on?#}
+{#                    </div>#}
+{#                </div>#}
+{#                </div>#}
+{#            <div id="close-chat" onclick="closeChatbox()"></div>#}
+{##}
+{#            </div>#}
 
+            <div id="chat" class="animated-chat tada" onclick="loadChatbox()">Chat</div>
+            <div class="chatbox" id="chatbox">
+                <span class="chat-text">Chatting</span>
+                <script>
+                    //<![CDATA[
+                    document.write('<div id="smartchatbox_img901621879" style="width: 280px; height: 450px; overflow: hidden; margin: auto; padding: 0;">');
+                    document.write('<div id="smartchatbox901621879" style="width: 280px; height: 450px; overflow: hidden; margin: auto; padding: 0; border:0; ">');
+                    document.write('<iframe src="https://www3.smartchatbox.com/shoutbox/sb.php?key=901621879" scrolling="no" frameborder="0" width="280px" height="450px" style="border:0; margin:0; padding: 0;">');
+                    document.write('</iframe></div></div>');
+                    //]]>
+                </script>
+                <div id="close-chat" onclick="closeChatbox()">&times;</div>
+                <div id="minim-chat" onclick="minimChatbox()"><span class="minim-button">&minus;</span></div>
+                <div id="maxi-chat" onclick="loadChatbox()"><span class="maxi-button">&plus;</span></div>
+            </div>
         </div>
     </body>
 </html>

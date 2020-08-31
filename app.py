@@ -63,7 +63,7 @@ def write_story():
 # db에 저장된 데이터를 가져와서 json으로 변환된 것을 html에 전달함.
 @app.route('/makeStory', methods=["GET"])
 def read_story():
-    storylines = list(db.story.find({}, {'_id': 0}))
+    storylines = list(db.story.find({'story'}, {'_id': 0}))
     return jsonify({'result': 'success', 'storylines': storylines})
 
 
