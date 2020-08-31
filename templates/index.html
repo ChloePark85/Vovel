@@ -3,6 +3,11 @@
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta property="og:title" content="Vovel! | 오디오 기반 채팅형 소설플랫폼!" />
+        <meta property="og:description" content="소설을 채팅형으로 변환후 오디오 콘텐츠로 만들 수 있는 사이트입니다." />
+        <meta property="og:image" content="{{ url_for('static', filename='thumbnail.png') }}" />
+
+
         <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
               integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
@@ -30,7 +35,7 @@
             });
 
             let bookList;
-            //브라우저에 주소가 입력되면 책 목록을 가져
+            //브라우저에 주소가 입력되면 책 목록을 가져온다.
             function showBookList() {
                 $.ajax({
                     type: "GET",
@@ -54,36 +59,42 @@
                 })
             }
 
-            function makeCard(title, author) {
-                let tempHtml = `<div class="card">
-                    <div class = "card-content">
-                        <div class = "title">
-                            <a href="#" onclick="Chatify('${title}')" id="title-box"></a>
-                        </div>
-                        <div class = "author">
-                            <a href="#" onclick="Chatify('${author}')" id="author-box"></a>
-                    </div>`;
-                $("#bookList-box").append(tempHtml);
-            };
 
-            {#function openClose() {#}
-            {#    if ($("#chat-box").css("display") == "block") {#}
-            {#        $("chat-box").hide();#}
-            {#    } else if () {#}
-            {#        $("#chat-box").show();#}
-            {#        $("#btn-chat-box").show();#}
-            {#        $("btn-chat-box").text("채팅 박스 닫기");#}
-            {#    }#}
+            //책 리스트에서  책제목을 클릭시 스토리를 가져옴.
+            function titleClick() {
+                bookList["title"].click(function () {
+                    $.ajax({
+                        type: "GET",
+                        url: "/book?title_give",
+                        data: {},
+                        success: function (response) {
+                            if (response["result"] == "success") {
+                                chatify(bookList["story"])
+                            } else {
+                                alert("스토리를 받아오지 못했습니다 ")
+                            }
+                        }
+                    })
+                })
             }
 
-            //사용자가 업로드한 데이터를 서버에 넘겨줌.
+            //책 리스트 목록 만들기
+            function makeCard(title, author) {
+                let tempHtml = `<tr>
+                            <td><a href="#" onclick="Chatify('${title}')" id="title-box">,</a></td>
+                            <td class = "author" id="author-box">${author}</td>
+                            </tr>`;
+                $("#bookList-box").append(tempHtml);
+            }
+
+
+            //사용자가 책을 업로드하는 경우  데이터를 서버에 넘겨줌.
             function makeStory() {
                 // Tutor: 사용자가 입력한 값을 가져옵니다.
                 let title = $("#book-title").val();
                 let author = $("#book-author").val();
                 let story = $("#book-story").val();
                 // TODO: 값이 없을 때는 입력해달다는 Validation을 구현합니다.
-
                 $.ajax({
                     type: "POST",
                     url: "/makeStory",
@@ -101,67 +112,68 @@
                 })
             }
 
-            //사용자가 업로드한 데이터에서 사용자가 클릭할 때마다 데이터의 챗/나레이션을 한줄씩 뽑아서 왼쪽 또는 중간에 담아서 그려
+            //사용자가 업로드한 데이터에서 사용자가 클릭할 때마다 데이터의 챗/나레이션을 한줄씩 뽑아오기 .
             function chatify() {
                 $.ajax({
                     type: "GET",
-                    url: "/makeStory",
+                    url: "/chatify",
                     data: {},
                     success: function (response) {
                         if (response["result"] == "success") {
-                            let storylines = response["storylines"];
-                            for (let i = 0; i < text.length; i++) {
-                                makeChatify(
-                                    chatify[i]
-                                );
+                            let storylines = response(story["text"]);
+                            $("#bring-button").onclick = function (){
+                                for (let i = 0; i < storylines.length; i++) {
+                                    makeLines(storylines[i]["text"])
+                            }
                             }
                         } else {
-                            alert("변환에 실패했습니다.")
+                            alert("문장을 가져오지 못했습니다. ")
                         }
                     }
                 })
             }
 
-            function makeChatify(line_type, text) {
-                let chatBox = $("chat-box").val();
-                if $(".story[line_type]") == "narration") {
-                    messages.push("");
-                } else if $(".story[line_type]") == "chat") {
-                    messages.push("");
+            // 한줄씩 뽑은 문장을 나레이션과 채팅으로 분류해서 메시지에 넣어주기.
+            function makeLines(line_type, text) {
+                let storylines = response(story["text"]);
+                if (storylines[line_type] == "narration") {
+                    messages.push(storylines[text]);
+                } else if (storylines[line_type] == "chat") {
+                    messages.push(storylines[text]);
                 }
             }
 
-            function loadChatbox() {
-                var e = document.getElementById("minim-chat");
-                e.style.display = "block";
-                var e = document.getElementById("maxi-chat");
-                e.style.display = "none";
-                var e = document.getElementById("chatbox");
-                e.style.margin = "0";
-            }
-
-            function closeChatbox() {
-                var e = document.getElementById("chatbox");
-                e.style.margin = "0 0 -1500px 0";
-            }
-
-            function minimChatbox() {
-                var e = document.getElementById("minim-chat");
-                e.style.display = "none";
-                var e = document.getElementById("maxi-chat");
-                e.style.display = "block";
-                var e = document.getElementById("chatbox");
-                e.style.margin = "0 0 -460px 0";
-            }
+            // 채팅박스 표시에 대한 부분. 추후 구현.
+            {#function loadChatbox() {#}
+            {#    var e = document.getElementById("minim-chat");#}
+            {#    e.style.display = "block";#}
+            {#    var e = document.getElementById("maxi-chat");#}
+            {#    e.style.display = "none";#}
+            {#    var e = document.getElementById("chatbox");#}
+            {#    e.style.margin = "0";#}
+            {#}#}
+            {##}
+            {#function closeChatbox() {#}
+            {#    var e = document.getElementById("chatbox");#}
+            {#    e.style.margin = "0 0 -1500px 0";#}
+            {#}#}
+            {##}
+            {#function minimChatbox() {#}
+            {#    var e = document.getElementById("minim-chat");#}
+            {#    e.style.display = "none";#}
+            {#    var e = document.getElementById("maxi-chat");#}
+            {#    e.style.display = "block";#}
+            {#    var e = document.getElementById("chatbox");#}
+            {#    e.style.margin = "0 0 -460px 0";#}
+            {#}#}
 
 
         </script>
     </head>
     <body>
 
-
         <!--사용자가 클릭할 수 있는 플로팅된 버튼. 클릭할 때마다 챗 또는 나레이션이 한줄씩 나옴-->
-        <a onclick="chatStoryCreate()" class="float">
+        <a onclick="chatify()" class="float" id="bring-button">
             <i class="fas fa-mouse my-float"></i>
         </a>
 
@@ -199,6 +211,7 @@
                     </tbody>
                 </table>
             </div>
+
 {#            <!-- 채팅 박스. 챗은 왼쪽 정렬, 나레이션은 중앙 정렬  -->#}
 {#            <div class="chat-box" onclick="loadChatbox()" id="chat">보기</div>#}
 {#            <div class="chatbox">#}
@@ -262,9 +275,9 @@
                     document.write('</iframe></div></div>');
                     //]]>
                 </script>
-                <div id="close-chat" onclick="closeChatbox()">&times;</div>
-                <div id="minim-chat" onclick="minimChatbox()"><span class="minim-button">&minus;</span></div>
-                <div id="maxi-chat" onclick="loadChatbox()"><span class="maxi-button">&plus;</span></div>
+{#                <div id="close-chat" onclick="closeChatbox()">&times;</div>#}
+{#                <div id="minim-chat" onclick="minimChatbox()"><span class="minim-button">&minus;</span></div>#}
+{#                <div id="maxi-chat" onclick="loadChatbox()"><span class="maxi-button">&plus;</span></div>#}
             </div>
         </div>
     </body>
