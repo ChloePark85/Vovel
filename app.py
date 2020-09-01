@@ -22,14 +22,13 @@ def read_book_list():
         'bookList': book_list
     })
 
-#책 정보를 쿼리 스트링으로 받아옴.
+
+# 책 정보를 쿼리 스트링으로 받아옴.
 @app.route('/book', methods=["GET"])
 def book_get():
     title_receive = request.args.get('title_give')
-    author_receive = request.args.get('author_give')
-    story_receive = request.args.get('story_give')
-    story=list(db.bookList)
-    return jsonify({'result':'success', 'msg':'업로드되었습니다.'})
+    book = db.bookList.find_one({"title": title_receive}, {"_id": 0})
+    return jsonify({'result': 'success', 'book': book})
 
 
 # 채팅형태로 변환해서 데이터베이스에 저장
