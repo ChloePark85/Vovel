@@ -81,7 +81,7 @@
             //책 리스트 목록 만들기
             function makeCard(title, author) {
                 let tempHtml = `<tr>
-                            <td><a href="#" onclick="Chatify('${title}')" id="title-box">,</a></td>
+                            <td><a href="#" onclick="Chatify('${title}')" id="title-box">${title}</a></td>
                             <td class = "author" id="author-box">${author}</td>
                             </tr>`;
                 $("#bookList-box").append(tempHtml);
