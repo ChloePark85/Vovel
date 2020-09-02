@@ -35,6 +35,7 @@
             });
 
             let book;
+            let order;
 
             //브라우저에 주소가 입력되면 책 목록을 가져온다.
             function showBookList() {
@@ -46,7 +47,6 @@
                         if (response["result"] == "success") {
                             bookList = response["bookList"];
                             for (let i = 0; i < bookList.length; i++) {
-                                story = bookList[i]["story"];
                                 makeCard(
                                     bookList[i]["title"],
                                     bookList[i]["author"],
@@ -72,6 +72,10 @@
                     success: function (response) {
                         if (response["result"] == "success") {
                             book = response["book"];
+                            let chatTag = $("#chat-box");
+                            order = 0;
+                            chatTag.append(`<div>${book["title"]}</div>`);
+                            chatTag.append(`<div>${book["author"]}</div>`);
                         } else {
                             alert("스토리를 받아오지 못했습니다 ")
                         }
@@ -82,7 +86,7 @@
             //책 리스트 목록 만들기
             function makeCard(title, author) {
                 let tempHtml = `<tr>
-                            <td><a href="#" onclick="titleClick('${title}')" id="title-box">${title}</a></td>
+                            <td><a href="#" onclick="titleClick('${title}'); return false;" id="title-box">${title}</a></td>
                             <td class = "author" id="author-box">${author}</td>
                             </tr>`;
                 $("#bookList-box").append(tempHtml);
@@ -145,6 +149,15 @@
             }
 
             // 채팅박스 표시에 대한 부분. 추후 구현.
+            function getStoryLine() {
+                let chatTag = $("#chat-box");
+                let storyLine = book["story"][order];
+                order = order + 1;
+                let type = storyLine["type"];
+                let text = storyLine["text"];
+                chatTag.append(`<div>${type}: ${text}</div>`);
+            }
+
             {#function loadChatbox() {#}
             {#    var e = document.getElementById("minim-chat");#}
             {#    e.style.display = "block";#}
@@ -171,7 +184,7 @@
     <body>
 
         <!--사용자가 클릭할 수 있는 플로팅된 버튼. 클릭할 때마다 챗 또는 나레이션이 한줄씩 나옴-->
-        <a onclick="chatify()" class="float" id="bring-button">
+        <a onclick="getStoryLine()" class="float" id="bring-button">
             <i class="fas fa-mouse my-float"></i>
         </a>
 
@@ -262,7 +275,8 @@
             {##}
             {#            </div>#}
 
-            <div id="chat" class="animated-chat tada" onclick="loadChatbox()">Chat</div>
+            <div id="chat" class="animated-chat tada" onclick="loadChatBox()">Chat</div>
+            <div id="chat-box"></div>
             <div class="chatbox" id="chatbox">
                 <span class="chat-text">Chatting</span>
                 <script>
