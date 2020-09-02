@@ -333,7 +333,9 @@ body {
     background: #dedede
 }
 
-.chat-box {
+#chat-box {
+    text-align: center;
     width: 50%;
     margin: 0 auto;
+    margin-bottom: 200px;
 }

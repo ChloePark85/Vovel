@@ -75,8 +75,7 @@
                             let chatTag = $("#chat-box");
                             chatTag.empty();
                             order = 0;
-                            chatTag.append(`<div>${book["title"]}</div>`);
-                            chatTag.append(`<div>${book["author"]}</div>`);
+                            chatTag.append(`<div>${book["title"]} - ${book["author"]}</div>`);
                         } else {
                             alert("스토리를 받아오지 못했습니다 ")
                         }
