@@ -2,46 +2,45 @@
     font-family: 'Stylish', sans-serif;
 }
 
-.float {
-    position: fixed;
-    width: 60px;
-    height: 60px;
-    bottom: 40px;
-    right: 40px;
-    background-color: white;
-    color: #FFF;
-    border-radius: 50px;
-    text-align: center;
-    box-shadow: 2px 2px 3px #999;
+.float{
+	position:fixed;
+	width:60px;
+	height:60px;
+	bottom:140px;
+	right:140px;
+	background-color:yellow;
+	color:#FFF;
+	border-radius:50px;
+	text-align:center;
+	box-shadow: 2px 2px 3px #999;
 }
 
-.my-float {
-    margin-top: 22px;
-}
 
 .wrap {
     width: 900px;
     margin: auto;
 }
 
-.wrap .chat-box {
-    width: 500px;
-    height: 1000px;
-    border: 1px solid;
-    /*padding: 100px;*/
-    margin: 20px;
-}
+/*.wrap .chat-box {*/
+/*    width: 500px;*/
+/*    height: 1000px;*/
+/*    border: 1px solid;*/
+/*    !*padding: 100px;*!*/
+/*    margin: 20px;*/
+/*}*/
 
 #bookList-box {
     text-align: center;
 }
 
-/*.chat-box {*/
-/*    border: 1px solid;*/
-/*    padding: 10px;*/
-/*    width: 100px;*/
-/*    height: 50px;*/
-/*}*/
+.chat-box {
+    border: 1px solid lightblue;
+    padding: 10px;
+    width: 100px;
+    height: 800px;
+    background-color: lightblue;
+    box-shadow: 2px 2px 3px #999;
+}
 
 .chat-box .time {
   text-align: center;
@@ -338,4 +337,8 @@ body {
     width: 50%;
     margin: 0 auto;
     margin-bottom: 200px;
+}
+
+.talk {
+    text-align: left;
 }

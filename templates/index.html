@@ -75,7 +75,7 @@
                             let chatTag = $("#chat-box");
                             chatTag.empty();
                             order = 0;
-                            chatTag.append(`<div>${book["title"]} - ${book["author"]}</div>`);
+                            chatTag.append(`<div>${book["title"]} - ${book["author"]}</div><br>`);
                         } else {
                             alert("스토리를 받아오지 못했습니다 ")
                         }
@@ -155,7 +155,12 @@
                 order = order + 1;
                 let type = storyLine["type"];
                 let text = storyLine["text"];
-                chatTag.append(`<div>${type}: ${text}</div>`);
+                if (type == "narration"){
+                    chatTag.append(`<div class="narration">${text}</div><br>`);
+                }
+                else {
+                    chatTag.append(`<div class="talk">${text}</div><br>`);
+                }
             }
 
             {#function loadChatbox() {#}
@@ -184,9 +189,7 @@
     <body>
 
         <!--사용자가 클릭할 수 있는 플로팅된 버튼. 클릭할 때마다 챗 또는 나레이션이 한줄씩 나옴-->
-        <a onclick="getStoryLine()" class="float" id="bring-button">
-            <i class="fas fa-mouse my-float"></i>
-        </a>
+        <a onclick="getStoryLine()" class="float" id="bring-button"><br>클릭!</a>
 
         <!--사이트 이름과 설명 섹션.-->
         <div class="wrap">
@@ -275,18 +278,19 @@
             {##}
             {#            </div>#}
 
-            <div id="chat" class="animated-chat tada" onclick="loadChatBox()">Chat</div>
-            <div id="chat-box"></div>
-            <div class="chatbox" id="chatbox">
-                <span class="chat-text">Chatting</span>
-                <script>
-                    //<![CDATA[
-                    document.write('<div id="smartchatbox_img901621879" style="width: 280px; height: 450px; overflow: hidden; margin: auto; padding: 0;">');
-                    document.write('<div id="smartchatbox901621879" style="width: 280px; height: 450px; overflow: hidden; margin: auto; padding: 0; border:0; ">');
-                    document.write('<iframe src="https://www3.smartchatbox.com/shoutbox/sb.php?key=901621879" scrolling="no" frameborder="0" width="280px" height="450px" style="border:0; margin:0; padding: 0;">');
-                    document.write('</iframe></div></div>');
-                    //]]>
-                </script>
+
+            <div class="chat-box" id="chat-box">
+{#                <div class="narration" id="narration"></div>#}
+{#                <div class="chat" id="chat"></div>#}
+{#                <span class="chat-text">Chatting</span>#}
+{#                <script>#}
+{#                    //<![CDATA[#}
+{#                    document.write('<div id="smartchatbox_img901621879" style="width: 280px; height: 450px; overflow: hidden; margin: auto; padding: 0;">');#}
+{#                    document.write('<div id="smartchatbox901621879" style="width: 280px; height: 450px; overflow: hidden; margin: auto; padding: 0; border:0; ">');#}
+{#                    document.write('<iframe src="https://www3.smartchatbox.com/shoutbox/sb.php?key=901621879" scrolling="no" frameborder="0" width="280px" height="450px" style="border:0; margin:0; padding: 0;">');#}
+{#                    document.write('</iframe></div></div>');#}
+{#                    //]]>#}
+{#                </script>#}
                 {#                <div id="close-chat" onclick="closeChatbox()">&times;</div>#}
                 {#                <div id="minim-chat" onclick="minimChatbox()"><span class="minim-button">&minus;</span></div>#}
                 {#                <div id="maxi-chat" onclick="loadChatbox()"><span class="maxi-button">&plus;</span></div>#}
