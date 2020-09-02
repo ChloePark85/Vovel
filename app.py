@@ -46,6 +46,9 @@ def write_story():
         if line.startswith('"'):
             line_type = "chat"
             # print(f"Chat: {line}")
+        # 공백은 저장하지않음
+        elif line in ("", "\n", "\t"):
+            continue
         else:
             line_type = "narration"
             # print(f"Narration: {line}")
