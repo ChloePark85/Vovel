@@ -22,14 +22,13 @@ def read_book_list():
         'bookList': book_list
     })
 
-#책 정보를 쿼리 스트링으로 받아옴.
+
+# 책 정보를 쿼리 스트링으로 받아옴.
 @app.route('/book', methods=["GET"])
 def book_get():
     title_receive = request.args.get('title_give')
-    author_receive = request.args.get('author_give')
-    story_receive = request.args.get('story_give')
-    story=list(db.bookList)
-    return jsonify({'result':'success', 'msg':'업로드되었습니다.'})
+    book = db.bookList.find_one({"title": title_receive}, {"_id": 0})
+    return jsonify({'result': 'success', 'book': book})
 
 
 # 채팅형태로 변환해서 데이터베이스에 저장
@@ -47,13 +46,16 @@ def write_story():
         if line.startswith('"'):
             line_type = "chat"
             # print(f"Chat: {line}")
+        # 공백은 저장하지않음
+        elif line in ("", "\n", "\t"):
+            continue
         else:
             line_type = "narration"
             # print(f"Narration: {line}")
 
         # Tutor: 대사 혹은 나레이션은 순서와 함께 하나의 content dictionary에 담습니다.
+
         content = {
-            'order': index,
             'type': line_type,
             'text': line,
         }
