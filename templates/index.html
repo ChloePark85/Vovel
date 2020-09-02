@@ -73,6 +73,7 @@
                         if (response["result"] == "success") {
                             book = response["book"];
                             let chatTag = $("#chat-box");
+                            chatTag.empty();
                             order = 0;
                             chatTag.append(`<div>${book["title"]}</div>`);
                             chatTag.append(`<div>${book["author"]}</div>`);
