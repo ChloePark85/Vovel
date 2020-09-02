@@ -51,8 +51,8 @@ def write_story():
             # print(f"Narration: {line}")
 
         # Tutor: 대사 혹은 나레이션은 순서와 함께 하나의 content dictionary에 담습니다.
+
         content = {
-            'order': index,
             'type': line_type,
             'text': line,
         }
