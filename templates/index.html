@@ -195,20 +195,50 @@
         <div class="wrap">
             <div class="jumbotron">
                 <H2 class="display-1">Vovel</H2>
-                <p class="lead">장문의 소설을 채팅형식으로 변환하는 사이트입니다.<br>나레이션과 대화로 구성된 텍스트파일을 업로드해주세요.</p>
+                <p class="lead">장문의 소설을 카카오톡 형식으로 변환하는 사이트입니다.<br>나레이션과 대화로 구성된 내 소설 입력하거나, 기존 소설을 선택해 주세요.</p>
                 <hr class="my-4">
                 <!-- 파일을 업로드할 수 있는 섹션.-->
                 <p class="lead">
                     <!-- Tutor: Ajax로 보낼 것이므로 Form tag를 제거합니다. -->
                     <!-- Tutor: 받으려는 값에 id를 부여하여 jQuery($)가 쉽게 캐치할 수 있도록 합니다. -->
-                <h5>소설 제목 </h5><input type="text" name="title" id="book-title"><br><br>
-                <h5>저자</h5><input type="text" name="author" id="book-author"><br><br>
-                <h5>소설 내용 </h5><textarea cols="50" rows="10" id="book-story"></textarea><br><br>
+{#                    <label for="basic-url">여기에 소설 제목, 저자, 소설 내용을 입력해주세요.소설 업로드한 후 오른쪽 클릭버튼을 눌러보세요. </label>#}
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="book-title">소설 제목 </span>
+                    </div>
+                    <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3">
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="book-author">저자     </span>
+                    </div>
+                    <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+{#                    <div class="input-group-append">#}
+{#                        <span class="input-group-text" id="book-story">소설 내용</span>#}
+{#                    </div>#}
+                </div>
+
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="book-story">소설 내용 </span>
+                    </div>
+                    <textarea class="form-control" aria-label="With textarea"></textarea>
+                </div>
+{#                <h5>소설 제목 </h5><input type="text" name="title" id="book-title"><br><br>#}
+{#                <h5>저자</h5><input type="text" name="author" id="book-author"><br><br>#}
+{#                <h5>소설 내용 </h5><textarea cols="50" rows="10" id="book-story"></textarea><br><br>#}
                 <!-- Tutor: 서버로 소설 내용을 보내야하므로 makeChatify -> makeStory로 바꿉니다 -->
-                <input type="button" id="button1" onclick="makeStory();" value="변환을 시작하자!">
+            </p>
+                <br>
+                <p>
+                    <button type="button" class="btn btn-secondary btn-lg" id="button1" onclick="makeStory();" style="text-align:center">내 소설 업로드하기</button>
+{#                <input type="button" id="button1" onclick="makeStory();" value="변환을 시작하자!">#}
                 </p>
+
             </div>
             <!-- 책 목록.  -->
+            <H5><span class="prepared-books" id="prepared" style="text-align:center">미리 준비된 소설입니다. 제목을 클릭한 후 오른쪽 클릭 버튼을 눌러보세요. </span></H5><br>
             <div class="bookList">
                 <table class="table">
                     <thead>

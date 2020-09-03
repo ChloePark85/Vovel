@@ -19,6 +19,7 @@
 .wrap {
     width: 900px;
     margin: auto;
+    align-items: center;
 }
 
 /*.wrap .chat-box {*/
@@ -341,4 +342,8 @@ body {
 
 .talk {
     text-align: left;
+}
+.btn-lg {
+    align-items:center;
+    justify-content: center;
 }
