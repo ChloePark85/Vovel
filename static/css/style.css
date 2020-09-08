@@ -347,3 +347,27 @@ body {
     align-items:center;
     justify-content: center;
 }
+
+.chat__icon{
+    font-size:30px;
+    transition:opacity 0.5s ease-in-out;
+    float:left;
+    margin-right:10px;
+}
+
+.chat__icon-left{
+    position:absolute;
+    left:10px;
+}
+
+
+
+.message__bubble{
+    background-color: yellow;
+    border-radius:15px;
+    box-shadow:rgba(0, 0, 0, 0.3) 0px 8px 16px -8px, rgba(0,0,0,0.024) 0px -6px 16px -6px;
+    padding:10px 20px;
+    border:black;
+    width: 50%;
+    float:left;
+}

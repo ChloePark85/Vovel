@@ -156,10 +156,13 @@
                 let type = storyLine["type"];
                 let text = storyLine["text"];
                 if (type == "narration"){
-                    chatTag.append(`<div class="narration">${text}</div><br>`);
+                    narration = chatTag.append(`<div class="narration">${text}</div><br>`);
                 }
                 else {
-                    chatTag.append(`<div class="talk">${text}</div><br>`);
+
+                    chat = chatTag.append(`<div class="chat__icon">
+            <i class="fas fa-user-circle"></i>
+        </div><div class="talk message__bubble">${text}</div><br><br>`);
                 }
             }
 
@@ -310,9 +313,7 @@
 
 
             <div class="chat-box" id="chat-box">
-{#                <div class="narration" id="narration"></div>#}
-{#                <div class="chat" id="chat"></div>#}
-{#                <span class="chat-text">Chatting</span>#}
+
 {#                <script>#}
 {#                    //<![CDATA[#}
 {#                    document.write('<div id="smartchatbox_img901621879" style="width: 280px; height: 450px; overflow: hidden; margin: auto; padding: 0;">');#}
